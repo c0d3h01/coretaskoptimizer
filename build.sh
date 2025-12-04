@@ -17,16 +17,16 @@ check_ndk() {
 build_abi() {
     local ABI=$1
     local BUILD_DIR="build/$ABI"
-    
+
     echo "[*] Building for $ABI..."
-    
+
     # Clean existing build directory
     rm -rf "$BUILD_DIR"
     mkdir -p "$BUILD_DIR"
     cd "$BUILD_DIR"
-    
+
     echo " - Working in: $(pwd)"
-    
+
     echo "[*] Configuring CMake..."
     cmake \
         -DCMAKE_TOOLCHAIN_FILE="$ANDROID_NDK/build/cmake/android.toolchain.cmake" \
@@ -34,13 +34,13 @@ build_abi() {
         -DANDROID_PLATFORM="$ANDROID_PLATFORM" \
         -DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
         ../..
-    
+
     echo "[*] Building..."
     cmake --build . -j"$(nproc 2>/dev/null || echo 4)"
-    
+
     # Create bin directory structure instead of libs
     mkdir -p "../../bin/$ABI"
-    
+
     # Check if the executable exists and copy it
     if [[ -f "bin/task_optimizer" ]]; then
         cp bin/task_optimizer "../../bin/$ABI/"
@@ -53,7 +53,7 @@ build_abi() {
         ls -la bin/ 2>/dev/null || echo "bin/ directory doesn't exist"
         exit 1
     fi
-    
+
     cd ../..
 }
 
