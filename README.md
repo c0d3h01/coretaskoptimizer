@@ -70,7 +70,3 @@ The module includes a thread-safe `Logger` with automatic rotation to ensure tra
 
 > [!CAUTION]
 > **Disclaimer:** While thoroughly tested, modifying kernel scheduling parameters always carries a slight risk. I am not responsible for any software instability.
-
----
-
-**Keywords:** *C++ Android Optimizer, Magisk Module, SCHED_FIFO, CPU Affinity, Linux Syscall, Kgsl GPU Boost, Touch Latency Fix, Surfaceflinger Optimization, Root Performance.*
