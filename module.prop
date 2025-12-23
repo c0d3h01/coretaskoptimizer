@@ -1,7 +1,7 @@
 id=task_optimizer
-name=Core-Task_Optimizer
+name=Task_Optimizer
 version=2.1.3
 versionCode=201530
-author=c0d3h01 | Follow me github: @c0d3h01
+author=c0d3h01 @ github
 description=Enhances system performance by prioritizing critical tasks on high-performance.
 updateJson=https://raw.githubusercontent.com/c0d3h01/TaskCoreOptimizer/refs/heads/main/update.json
