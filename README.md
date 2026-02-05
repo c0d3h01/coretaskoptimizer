@@ -1,72 +1,53 @@
-# Core Task Optimizer: Native C++ Android Performance Module
+# Core Task Optimizer
 
 [![Android Build Test](https://github.com/c0d3h01/CoreTaskOptimizer/actions/workflows/checks.yml/badge.svg?branch=main)](https://github.com/c0d3h01/CoreTaskOptimizer/actions/workflows/checks.yml)
+[![License](https://img.shields.io/badge/License-Custom-blue.svg)](LICENSE)
 
-**A high-performance Magisk module written in C++17 that optimizes Android system processes via direct Linux syscalls.**
+Core Task Optimizer is a native C++ Android root module built for Magisk, KernelSU, and APatch. It improves system responsiveness by applying low level CPU affinity, scheduler, and I/O priority policies to critical system tasks using direct Linux syscalls.
 
-Unlike shell-based optimizers, **Core Task Optimizer** runs as a native binary, offering nanosecond-level efficiency in adjusting CPU affinity, scheduling policies (`SCHED_FIFO`), and I/O priorities to eliminate UI lag and reduce touch latency.
+## Why This Module
 
----
+- Focused on system level latency and UI smoothness
+- Uses native C++ syscalls instead of shell wrappers
+- Applies policies at the thread level for precision
+- One shot run at boot for minimal overhead
 
-## ⚡ Core Features
+## How It Works
 
-* **🚀 Native C++ Architecture:** Built with C++17 for minimal overhead and thread-safe execution.
-* **🧠 Auto-Adaptive CPU Topology:** Dynamically detects Performance vs. Efficiency cores by parsing `/sys/devices/system/cpu` frequencies. No hardcoded core masks.
-* **🎮 GPU & Touch Real-Time Mode:** Forces `SCHED_FIFO` priority on critical threads like `kgsl_worker_thread` (Adreno GPU) and `fts_wq` (Touch Panels).
-* **🛡️ Syscall-Level Optimization:** Bypasses standard shell commands to invoke `sched_setaffinity`, `setpriority`, and `ioprio_set` directly via the kernel interface.
-* **🔋 Intelligent I/O Throttling:** automatically lowers I/O priority for background logging and garbage collection tasks (`f2fs_gc`) to prevent disk contention.
+- Matches selected process names from `/proc/<pid>/comm`
+- Applies policies to every thread in `/proc/<pid>/task`
+- Groups include system critical, real time, and background maintenance
+- Logs all actions to `/data/adb/modules/task_optimizer/logs/`
 
----
+## Compatibility
 
-## 🛠️ Technical Implementation
+- Root required: Magisk, KernelSU, or APatch
+- Android 8.0+ recommended
+- ARM64 preferred (other ABIs supported if built)
 
-The optimizer uses a custom `SyscallOptimizer` class to apply changes safely and effectively:
+## Quick Start
 
-### 1. High Priority System Tasks
-**Target:** `system_server`, `surfaceflinger`, `zygote`, `composer`
-* **Action:** Sets **Nice -10** and locks to **Performance Cores**.
-* **Result:** Instant app launches and smoother UI rendering.
+- Install the module zip from Releases
+- Reboot and wait for boot completion plus 30 seconds
+- Open `/data/adb/modules/task_optimizer/logs/main.log`
 
-### 2. Real-Time (RT) Latency Reduction
-**Target:** `kgsl_worker_thread` (GPU), `crtc_commit` (Display), `nvt_ts_work` (Touch Input)
-* **Action:** Applies **SCHED_FIFO** (Real-Time Scheduling) with Priority 50.
-* **Result:** Eliminates micro-stutters in games and reduces input delay.
+## Documentation
 
-### 3. Background Suppression
-**Target:** `f2fs_gc`, `wlan_logging_th`
-* **Action:** Sets **Nice 5**, restricts to **Efficiency Cores**, and lowers **I/O Class to 3**.
-* **Result:** Prevents background maintenance from slowing down your active app.
+This README is the index for the full wiki. Start with Home or Overview.
 
----
+- [Home](../../wiki/Home)
+- [Overview](../../wiki/Overview)
+- [Installation](../../wiki/Installation)
+- [Usage](../../wiki/Usage)
+- [How It Works](../../wiki/How-It-Works)
+- [Optimization Targets](../../wiki/Optimization-Targets)
+- [Logging and Diagnostics](../../wiki/Logging-and-Diagnostics)
+- [Troubleshooting](../../wiki/Troubleshooting)
+- [Advanced Tuning](../../wiki/Advanced-Tuning)
+- [Build and Development](../../wiki/Build-and-Development)
+- [FAQ](../../wiki/FAQ)
+- [Changelog](../../wiki/Changelog)
 
-## 📊 Logging & Transparency
+## Safety Notice
 
-The module includes a thread-safe `Logger` with automatic rotation to ensure transparency without filling your storage.
-
-* **Main Log:** `/data/adb/modules/task_optimizer/logs/main.log`
-* **Error Log:** `/data/adb/modules/task_optimizer/logs/error.log`
-
----
-
-## 📋 Requirements
-
-* **Root Access:** Magisk, KernelSU, or APatch.
-* **Android Version:** Android 8.0+ (Oreo and newer).
-* **Architecture:** ARM64 (Snapdragon, MediaTek, Exynos, Tensor).
-
----
-
-## 📥 Installation
-
-1.  Download the latest ZIP from [Releases](#).
-2.  Install via Magisk/KernelSU Manager.
-3.  Reboot.
-4.  Check the logs at the path above to verify successful optimizations.
-
----
-
-> [!NOTE]
-> **Safety First:** This module uses a `Sanitizer` class to validate PIDs and prevent regex injection. It is designed to be fail-safe; if a syscall fails, it logs the error and continues without crashing the system.
-
-> [!CAUTION]
-> **Disclaimer:** While thoroughly tested, modifying kernel scheduling parameters always carries a slight risk. I am not responsible for any software instability.
+This module changes kernel scheduling behavior. Read the Safety and Limits page before using it on production devices.
