@@ -46,7 +46,6 @@ This README is the index for the full wiki. Start with Home or Overview.
 - [Advanced Tuning](../../wiki/Advanced-Tuning)
 - [Build and Development](../../wiki/Build-and-Development)
 - [FAQ](../../wiki/FAQ)
-- [Changelog](../../wiki/Changelog)
 
 ## Safety Notice
 
