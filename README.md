@@ -18,7 +18,6 @@ A native C++ Android root module for **Magisk**, **KernelSU**, and **APatch** th
 - [Installation](#installation)
 - [Verifying Operation](#verifying-operation)
 - [Build from Source](#build-from-source)
-- [Project Structure](#project-structure)
 - [Safety Notice](#safety-notice)
 - [Contributing](#contributing)
 - [License](#license)
@@ -160,30 +159,6 @@ Release builds apply `-O3 -flto -ffunction-sections -fdata-sections` and strip t
 
 ---
 
-## Project Structure
-
-```
-CoreTaskOptimizer/
-├── src/
-│   └── main.cpp              # Core optimizer: topology, syscalls, process enumeration
-├── common/
-│   ├── functions.sh          # MMT Extended utility functions (modified)
-│   └── install.sh            # Module install-time output
-├── META-INF/
-│   └── com/google/android/
-│       ├── update-binary     # Magisk module entry point
-│       └── updater-script    # Magisk marker
-├── CMakeLists.txt            # Cross-compilation build definition
-├── build.sh                  # Multi-ABI build script
-├── customize.sh              # Magisk module customization hook
-├── module.prop               # Module metadata
-├── service.sh                # Boot service: waits for boot, runs binary
-├── uninstall.sh              # Clean uninstall handler
-└── update.json               # OTA update manifest
-```
-
----
-
 ## Safety Notice
 
 This module modifies kernel scheduling parameters for running processes. While the changes are non-persistent and reset on reboot, please be aware of the following:
@@ -216,17 +191,3 @@ This project is licensed under the **GNU General Public License v3.0**. See [LIC
 **MMT Extended** by [Zackptg5](https://github.com/Zackptg5) — the Magisk module framework used as the foundation for the installer scripts.
 
 The **Magisk**, **KernelSU**, and **APatch** projects and their communities — for building and maintaining the root management ecosystem that makes modules like this possible.
-
----
-
-## ❤️ Thank You
-
-This project exists because of the incredible Android root community. Every bug report, star, share, and kind word genuinely means a lot and keeps this project alive and improving.
-
-A special thank you to the **Magisk**, **KernelSU**, and **APatch** communities for building the foundation that makes modules like this possible, and to every user who trusted this module on their device.
-
-If this module made your device feel even a little snappier, that is everything I could ask for. Your support, big or small, is what turns a side project into something worth maintaining.
-
-With love and gratitude 🙏❤️
-
-- [c0d3h01](https://github.com/c0d3h01)
