@@ -7,7 +7,7 @@
 [![Magisk](https://img.shields.io/badge/Magisk-v20.4%2B-green)](https://github.com/topjohnwu/Magisk)
 [![Android](https://img.shields.io/badge/Android-8.0%2B-brightgreen)](https://www.android.com)
 
-A native C++ Android root module for **Magisk**, **KernelSU**, and **APatch** that improves system responsiveness by applying precise CPU affinity, scheduler, and I/O priority policies to critical system tasks via direct Linux syscalls — with zero persistent overhead after the initial boot run.
+An Android root module for [**Magisk**](https://magiskmanager.com/), [**KernelSU**](https://kernelsu.org/), and [**APatch**](https://apatch.dev/) that improves system responsiveness by applying precise CPU affinity, scheduler, and I/O priority policies to critical system tasks via direct Linux syscalls — with zero persistent overhead after the initial boot run.
 
 ---
 
