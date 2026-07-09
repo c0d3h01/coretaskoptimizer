@@ -1,5 +1,7 @@
 # Core Task Optimizer
 
+<a href="https://t.me/c0d3h01prjkts"><img src="https://img.shields.io/badge/Telegram-Channel-blue?logo=telegram&style=social"></a>
+
 [![Android Build Test](https://github.com/c0d3h01/CoreTaskOptimizer/actions/workflows/checks.yml/badge.svg?branch=main)](https://github.com/c0d3h01/CoreTaskOptimizer/actions/workflows/checks.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![Magisk](https://img.shields.io/badge/Magisk-v20.4%2B-green)](https://github.com/topjohnwu/Magisk)
