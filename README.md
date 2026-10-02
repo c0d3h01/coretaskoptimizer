@@ -1,31 +1,8 @@
 # Core Task Optimizer
 
+A Root module that improves system responsiveness by applying precise CPU affinity, scheduler, and I/O priority policies to critical system tasks via direct Linux syscalls — with zero persistent overhead after the initial boot run.
+
 <a href="https://t.me/c0d3h01prjkts"><img src="https://img.shields.io/badge/Telegram-Channel-blue?logo=telegram&style=social"></a>
-
-[![Android Build Test](https://github.com/c0d3h01/CoreTaskOptimizer/actions/workflows/checks.yml/badge.svg?branch=main)](https://github.com/c0d3h01/CoreTaskOptimizer/actions/workflows/checks.yml)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
-[![Magisk](https://img.shields.io/badge/Magisk-v20.4%2B-green)](https://github.com/topjohnwu/Magisk)
-[![Android](https://img.shields.io/badge/Android-8.0%2B-brightgreen)](https://www.android.com)
-
-An Android root module for [**Magisk**](https://magiskmanager.com/), [**KernelSU**](https://kernelsu.org/), and [**APatch**](https://apatch.dev/) that improves system responsiveness by applying precise CPU affinity, scheduler, and I/O priority policies to critical system tasks via direct Linux syscalls — with zero persistent overhead after the initial boot run.
-
----
-
-## Table of Contents
-
-- [Why This Module](#why-this-module)
-- [How It Works](#how-it-works)
-- [Optimization Targets](#optimization-targets)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Verifying Operation](#verifying-operation)
-- [Build from Source](#build-from-source)
-- [Safety Notice](#safety-notice)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgements](#acknowledgements)
-
----
 
 ## Why This Module
 
@@ -33,13 +10,10 @@ Most Android performance tweaks rely on shell scripts calling `renice` or writin
 
 Core Task Optimizer takes a different approach:
 
-- **Native C++ binary** — compiled per ABI, no shell interpreter overhead
 - **Direct syscalls** — `sched_setaffinity`, `sched_setscheduler`, `setpriority`, `ioprio_set` called directly
 - **Thread-level precision** — policies applied to every thread in `/proc/<pid>/task`, not just the parent process
 - **One-shot at boot** — runs once after boot completion, then exits. No daemons, no polling loops, no persistent memory footprint
 - **Dynamic CPU topology detection** — reads `/sys/devices/system/cpu/cpu*/cpufreq/cpuinfo_max_freq` at runtime to correctly identify performance and efficiency cores on any SoC
-
----
 
 ## How It Works
 
@@ -65,8 +39,6 @@ task_optimizer binary starts
 
 The binary matches process names against entries in `/proc/<pid>/comm` using `std::regex`. All operations include retry logic (up to 3 attempts) to handle transient failures during the early boot window.
 
----
-
 ## Optimization Targets
 
 | Group | Processes | Policy Applied |
@@ -75,15 +47,11 @@ The binary matches process names against entries in `/proc/<pid>/comm` using `st
 | Real-Time | `kgsl_worker_thread`, `crtc_commit`, `crtc_event`, `pp_event`, `fts_wq`, `nvt_ts_work` | SCHED_FIFO priority 50, perf core affinity |
 | Background | `f2fs_gc`, `wlan_logging_th` | nice +5, efficiency core affinity, I/O priority class 3 |
 
----
-
 ## Requirements
 
 - **Root manager:** Magisk v20.4+, KernelSU v0.6.6+, or APatch
 - **Android:** 8.0 (API 26) or higher recommended
 - **Architecture:** ARM64 (arm64-v8a) preferred; armeabi-v7a, x86, x86_64 also supported
-
----
 
 ## Installation
 
@@ -94,8 +62,6 @@ The binary matches process names against entries in `/proc/<pid>/comm` using `st
 5. Reboot your device
 
 The module runs automatically approximately 30 seconds after boot completes.
-
----
 
 ## Verifying Operation
 
@@ -108,8 +74,8 @@ cat /data/adb/modules/task_optimizer/logs/main.log
 A successful run ends with a summary line similar to:
 
 ```
-[2025-01-01 12:00:30] Operations: 84 | Success: 81 | Failed: 3
-[2025-01-01 12:00:30] === System Optimization Completed ===
+[xxxx-xx-xx xx:xx:xx] Operations: 84 | Success: 81 | Failed: 3
+[xxxx-xx-xx xx:xx:xx] === System Optimization Completed ===
 ```
 
 If the binary encountered errors, check:
@@ -119,8 +85,6 @@ cat /data/adb/modules/task_optimizer/logs/error.log
 ```
 
 Log files are automatically rotated at 1 MB to prevent unbounded growth.
-
----
 
 ## Build from Source
 
@@ -159,8 +123,6 @@ Binaries are output to `bin/<abi>/task_optimizer`.
 
 Release builds apply `-O3 -flto -ffunction-sections -fdata-sections` and strip the final binary.
 
----
-
 ## Safety Notice
 
 This module modifies kernel scheduling parameters for running processes. While the changes are non-persistent and reset on reboot, please be aware of the following:
@@ -170,8 +132,6 @@ This module modifies kernel scheduling parameters for running processes. While t
 - **Root access required.** This module will not install or function without a supported root manager.
 - The module does not modify any system partitions. Uninstalling via your root manager fully removes all effects.
 
----
-
 ## Contributing
 
 Contributions are welcome. Please open an issue before submitting a pull request for non-trivial changes so the approach can be discussed first.
@@ -180,16 +140,12 @@ Contributions are welcome. Please open an issue before submitting a pull request
 - Test on at least one physical device before submitting
 - Update `common/install.sh` version strings when bumping the version
 
----
-
 ## License
 
-This project is licensed under the **GNU General Public License v3.0**. See [LICENSE](LICENSE) for the full text.
-
----
+This project is licensed under the [MIT LICENSE](LICENSE)
 
 ## Acknowledgements
 
-**MMT Extended** by [Zackptg5](https://github.com/Zackptg5) — the Magisk module framework used as the foundation for the installer scripts.
+[MMT Extended](https://github.com/Zackptg5/MMT-Extended) the Magisk module framework used as the foundation for the installer scripts.
 
-The **Magisk**, **KernelSU**, and **APatch** projects and their communities — for building and maintaining the root management ecosystem that makes modules like this possible.
+The [Magisk](https://github.com/topjohnwu/Magisk), [KernelSU](https://kernelsu.org/), and [APatch](https://github.com/bmax121/APatch) projects and their communities — for building and maintaining the root management ecosystem that makes modules like this possible.
